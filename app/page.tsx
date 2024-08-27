@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
@@ -11,10 +11,8 @@ export default function Home() {
 
   useEffect(() => {
     if (user?.token) {
-      // If the token is available, navigate to the blogs page
       router.push("/blogs");
     } else {
-      // If the token is not available, navigate to the sign-in page
       router.push("/signin");
     }
   }, [user, router]);
