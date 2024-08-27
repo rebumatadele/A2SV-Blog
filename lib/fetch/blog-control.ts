@@ -29,7 +29,7 @@ const createBlog = async (
     }
   };
 
-  const getBlog = async (): Promise<MyBlogResponse> => {
+  const getBlog = async (): Promise<MyBlogElement[]> => {
     try {
       const response = await fetch(`${BASE_URL}/api/blogs`, {
         method: 'GET',
@@ -39,17 +39,18 @@ const createBlog = async (
       });
   
       if (response.status === 200) {
-        const data: MyBlogResponse = await response.json();
+        const data: MyBlogElement[] = await response.json();
         return data;
       } else {
-        alert(`Registration failed with status code: ${response.status}`)
-        throw new Error(`Registration failed with status code: ${response.status}`);
+        alert(`Fetch failed with status code: ${response.status}`);
+        throw new Error(`Fetch failed with status code: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error('Error fetching blogs:', error);
       throw error;
     }
   };
+  
   const getSingleBlog = async (id:string): Promise<MyBlogElement> => {
     try {
       const response = await fetch(`${BASE_URL}/api/blogs/${id}`, {

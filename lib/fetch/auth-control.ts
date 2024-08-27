@@ -14,7 +14,7 @@ const register = async (userDetails: RegisterRequest): Promise<RegisterResponse>
       body: JSON.stringify(userDetails),
     });
 
-    if (response.status === 200) {
+    if (response.status === 201) {
       const data: RegisterResponse = await response.json();
       return data;
     } else {

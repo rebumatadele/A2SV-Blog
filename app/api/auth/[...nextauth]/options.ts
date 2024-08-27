@@ -9,13 +9,13 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        userName: { label: "Username", type: "string" },
+        email: { label: "Username", type: "string" },
         password: { label: "Password", type: "string" }
       },
     
       async authorize(credentials, req) {
         try {
-          const response = await login(credentials as { userName: string; password: string });
+          const response = await login(credentials as { email: string; password: string });
           if (response.success) {
             return response.data; // Return the user data object
           } else {

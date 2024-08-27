@@ -1,7 +1,5 @@
-"use client"
-import { useRouter } from 'next/navigation'
+import React from 'react'
 import Form from './components/Form'
-
 const page = () => {
   return (
     <Form></Form>
