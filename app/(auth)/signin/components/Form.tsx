@@ -81,7 +81,7 @@ const Form = () => {
             )}
           </div>
 
-          <Button type="submit">Login</Button>
+          <Button type="submit" className="bg-[#264FAD]">Login</Button>
         </form>
 
         <div className="flex gap-3 mt-4 items-center">

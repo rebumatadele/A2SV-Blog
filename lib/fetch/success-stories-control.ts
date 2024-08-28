@@ -2,7 +2,7 @@
 
 import { SuccessStoriesResponse } from "@/types/success-stories-control.interface";
 
-const BASE_URL = 'https://a2sv-backend.onrender.com'
+const BASE_URL = 'http://blogapp.tryasp.net'
 
 
 const getTeamMember = async (): Promise<SuccessStoriesResponse> => {

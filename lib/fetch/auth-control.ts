@@ -1,7 +1,7 @@
 // authenticationController.ts
 import { RegisterRequest, RegisterResponse, LoginRequest, LoginResponse, ChangePasswordRequest, ChangePasswordResponse, EditProfileResponse, EditProfileRequest } from '@/types/auth-control.interface';
 
-const BASE_URL = 'https://a2sv-backend.onrender.com'
+const BASE_URL = 'http://blogapp.tryasp.net'
 
 
 const register = async (userDetails: RegisterRequest): Promise<RegisterResponse> => {

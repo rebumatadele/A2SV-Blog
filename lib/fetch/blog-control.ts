@@ -1,6 +1,6 @@
 import { CreateBlogRequest, MyBlogElement, MyBlogResponse } from "@/types/blog-control.interface";
 
-const BASE_URL = 'https://a2sv-backend.onrender.com'
+const BASE_URL = 'http://blogapp.tryasp.net'
 
 const createBlog = async (
     changePasswordDetails: CreateBlogRequest,

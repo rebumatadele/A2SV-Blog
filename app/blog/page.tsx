@@ -18,17 +18,16 @@ import {
 
 const Page = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state: RootState) => state.blog.blogs) || []; // Access the correct state property
-  console.log("Blogs from Redux Store:", blogs);
+  const blogs = useSelector((state: RootState) => state.blog.blogs) || [];
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState(""); // State for search term
   const blogsPerPage = 5;
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
         const response = await getBlog();
-        console.log("Fetched Response:", response);
-        dispatch(blogActions.setBlogs(response)); // Pass response directly
+        dispatch(blogActions.setBlogs(response));
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
       }
@@ -37,11 +36,16 @@ const Page = () => {
     fetchBlog();
   }, [dispatch]);
 
+  // Filter blogs based on the search term
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
-  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -49,7 +53,7 @@ const Page = () => {
         <Navbar />
       </header>
       <main className="flex-grow p-8 gap-5 w-full mb-20">
-        <BlogHeader />
+        <BlogHeader setSearchTerm={setSearchTerm} />
         <section className="flex justify-center">
           <div className="flex flex-col w-3/4 gap-5">
             {currentBlogs.length > 0 ? (
@@ -60,7 +64,9 @@ const Page = () => {
             {totalPages > 1 && (
               <Pagination className="flex justify-center gap-2 mt-6">
                 <PaginationPrevious
-                  className={`px-4 py-2 bg-blue-500 text-white rounded-md ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+                    currentPage === 1 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 >
                   Previous
@@ -69,20 +75,25 @@ const Page = () => {
                   <PaginationItem
                     key={index + 1}
                     onClick={() => setCurrentPage(index + 1)}
-                    className={`px-3 py-1 border rounded-md cursor-pointer ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-black'}`}
-                    style={{ 
-                      // Ensure no extra styles like dots or decorations are applied
-                      listStyle: 'none', 
-                      textDecoration: 'none',
-                      margin: '0',
-                      padding: '2',
+                    className={`px-3 py-1 border rounded-md cursor-pointer ${
+                      currentPage === index + 1
+                        ? "bg-blue-500 text-white"
+                        : "bg-white text-black"
+                    }`}
+                    style={{
+                      listStyle: "none",
+                      textDecoration: "none",
+                      margin: "0",
+                      padding: "2",
                     }}
                   >
                     {index + 1}
                   </PaginationItem>
                 ))}
                 <PaginationNext
-                  className={`px-4 py-2 bg-blue-500 text-white rounded-md ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                  className={`px-4 py-2 bg-blue-500 text-white rounded-md ${
+                    currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                  }`}
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 >
                   Next

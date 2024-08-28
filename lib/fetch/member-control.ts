@@ -2,7 +2,7 @@
 
 import { getTeamMemberResponse } from "@/types/member-control.interface";
 
-const BASE_URL = 'https://a2sv-backend.onrender.com'
+const BASE_URL = 'http://blogapp.tryasp.net'
 
 
 const getTeamMember = async (): Promise<getTeamMemberResponse> => {

@@ -82,7 +82,7 @@ const Page = () => {
           )}
         </div>
 
-        <Button type="submit">SignUp</Button>
+        <Button type="submit" className="bg-[#264FAD]">SignUp</Button>
       </form>
     </div>
   );
