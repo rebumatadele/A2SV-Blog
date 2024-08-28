@@ -6,26 +6,34 @@ import Footer from "@/app/components/Footer";
 import Image from "next/image";
 import { MyBlogElement } from "@/types/blog-control.interface";
 import Link from "next/link";
-import { getSingleBlog } from "@/lib/fetch/blog-control";
 import { useSelector } from "react-redux";
-import { RootState } from "@/app/context/store"; // Update import according to your store setup
+import { RootState } from "@/app/context/store";
+import data from "@/app/data.json"; // Make sure this JSON file is typed correctly
 
 interface DetailPageProps {
   params: { id: string };
 }
 
+// Ensure the structure of MyBlogElement matches the data you are using
 const DetailPage: React.FC<DetailPageProps> = ({ params }) => {
   const { id } = params;
   const [blog, setBlog] = useState<MyBlogElement | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const allBlogs = useSelector((state: RootState) => state.blog.blogs) || []; // Access all blogs from the store
+  // Access all blogs from the store
+  const allBlogs = useSelector((state: RootState) => state.blog.blogs) || [];
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await getSingleBlog(id);
-        setBlog(response);
+        // Find the blog in dummy data by id
+        const foundBlog = data.find((blog: MyBlogElement) => blog._id === id);
+        if (foundBlog) {
+          setBlog(foundBlog);
+        } else {
+          console.error("Blog not found");
+          setBlog(null); // Handle "not found" case
+        }
       } catch (error) {
         console.error("Error fetching blog data:", error);
       } finally {
@@ -42,7 +50,6 @@ const DetailPage: React.FC<DetailPageProps> = ({ params }) => {
         <div className="animate-pulse text-gray-700 text-lg">Please Wait...</div>
       </div>
     );
-  
 
   if (!blog) return <p>No blog found</p>;
 

@@ -5,10 +5,10 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import BlogHeader from "./components/BlogHeader";
 import Card from "../components/Card";
-import { getBlog } from "@/lib/fetch/blog-control";
 import { useDispatch, useSelector } from "react-redux";
 import { blogActions } from "../context/slices/blogSlice";
 import { RootState } from "../context/store";
+import data from "@/app/data.json";
 import {
   Pagination,
   PaginationItem,
@@ -26,8 +26,7 @@ const Page = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await getBlog();
-        dispatch(blogActions.setBlogs(response));
+        dispatch(blogActions.setBlogs(data));
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
       }
@@ -46,6 +45,24 @@ const Page = () => {
   const currentBlogs = filteredBlogs.slice(indexOfFirstBlog, indexOfLastBlog);
 
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+
+  // Function to generate pagination items
+  const generatePaginationItems = () => {
+    const items: (number | string)[] = [];
+    const range = 2; // Number of page numbers to show on each side of the current page
+
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || (i >= currentPage - range && i <= currentPage + range)) {
+        items.push(i);
+      } else if (items[items.length - 1] !== '...') {
+        items.push('...');
+      }
+    }
+
+    return items;
+  };
+
+  const paginationItems = generatePaginationItems();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -71,24 +88,30 @@ const Page = () => {
                 >
                   Previous
                 </PaginationPrevious>
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <PaginationItem
-                    key={index + 1}
-                    onClick={() => setCurrentPage(index + 1)}
-                    className={`px-3 py-1 border rounded-md cursor-pointer ${
-                      currentPage === index + 1
-                        ? "bg-blue-500 text-white"
-                        : "bg-white text-black"
-                    }`}
-                    style={{
+                {paginationItems.map((item, index) => (
+                  item === '...' ? (
+                    <span key={index} className="px-3 py-1 border rounded-md text-black">
+                      {item}
+                    </span>
+                  ) : (
+                    <PaginationItem
+                      key={item}
+                      onClick={() => setCurrentPage(item as number)}
+                      className={`px-3 py-1 border rounded-md cursor-pointer ${
+                        currentPage === item
+                          ? "bg-blue-500 text-white"
+                          : "bg-white text-black"
+                      }`}
+                      style={{
                       listStyle: "none",
                       textDecoration: "none",
                       margin: "0",
                       padding: "2",
                     }}
-                  >
-                    {index + 1}
-                  </PaginationItem>
+                    >
+                      {item}
+                    </PaginationItem>
+                  )
                 ))}
                 <PaginationNext
                   className={`px-4 py-2 bg-blue-500 text-white rounded-md ${

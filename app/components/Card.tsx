@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { MyBlogElement } from "@/types/blog-control.interface"; // Adjust import as necessary
-
+import data from "@/app/data.json"
 interface CardProps {
   blog: MyBlogElement;
 }
